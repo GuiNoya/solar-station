@@ -1,0 +1,193 @@
+{
+  "//": "Please only change this file when pimatic is NOT running, otherwise pimatic will overwrite your changes.",
+  "settings": {
+    "httpServer": {
+      "enabled": true,
+      "port": 80
+    },
+    "database": {
+      "deviceAttributeLogging": [
+        {
+          "deviceId": "*",
+          "attributeName": "*",
+          "type": "*",
+          "interval": "0",
+          "expire": "7d"
+        },
+        {
+          "deviceId": "*",
+          "attributeName": "*",
+          "type": "continuous",
+          "interval": "5min",
+          "expire": "7d"
+        },
+        {
+          "deviceId": "*",
+          "attributeName": "temperature",
+          "type": "number",
+          "expire": "1y"
+        },
+        {
+          "deviceId": "*",
+          "attributeName": "humidity",
+          "type": "number",
+          "expire": "1y"
+        }
+      ],
+      "messageLogging": [
+        {
+          "level": "*",
+          "tags": [],
+          "expire": "7d"
+        },
+        {
+          "level": "debug",
+          "tags": [],
+          "expire": "0"
+        }
+      ]
+    },
+    "authentication": {
+      "secret": "gZJgknIU9Nvt1bwV9nbuq5GaLGQKVpqpuzPtyETzHd3vSks7JF9yCEByrUBkf8B8SdKuVupfvbbJzahhiJaIsg=="
+    },
+    "httpsServer": {},
+    "gui": {}
+  },
+  "plugins": [
+    {
+      "plugin": "cron"
+    },
+    {
+      "plugin": "mobile-frontend"
+    },
+    {
+      "plugin": "mysensors",
+      "driver": "serialport",
+      "protocols": "1.4.1",
+      "driverOptions": {
+        "serialDevice": "/dev/ttyACM0",
+        "baudrate": 115200
+      }
+    },
+    {
+      "plugin": "dht-sensors"
+    },
+    {
+      "plugin": "sysinfo"
+    }
+  ],
+  "devices": [
+    {
+      "id": "DHT11",
+      "name": "DHT11",
+      "class": "MySensorsDHT",
+      "nodeid": 3,
+      "sensorid": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "Light",
+      "name": "Light",
+      "class": "MySensorsLight",
+      "nodeid": 1,
+      "sensorid": 0
+    },
+    {
+      "class": "SystemSensor",
+      "id": "syssensor-system",
+      "name": "System",
+      "attributes": [
+        {
+          "name": "cpu"
+        },
+        {
+          "name": "memory"
+        },
+        {
+          "name": "diskusage",
+          "path": "/"
+        }
+      ]
+    },
+    {
+      "class": "SystemSensor",
+      "id": "syssensor-temp",
+      "name": "System Temp.",
+      "attributes": [
+        {
+          "name": "temperature",
+          "interval": 5000
+        }
+      ]
+    },
+    {
+      "class": "MySensorsPIR",
+      "id": "PIR",
+      "name": "PIR",
+      "nodeid": 15,
+      "sensorid": 1,
+      "resetTime": 8000
+    }
+  ],
+  "rules": [],
+  "pages": [
+    {
+      "id": "favourite",
+      "name": "Favourites",
+      "devices": [
+        {
+          "deviceId": "DHT11"
+        },
+        {
+          "deviceId": "Switch"
+        },
+        {
+          "deviceId": "Light"
+        },
+        {
+          "deviceId": "my-sensor"
+        },
+        {
+          "deviceId": "syssensor-system"
+        },
+        {
+          "deviceId": "syssensor-temp"
+        },
+        {
+          "deviceId": "PIR"
+        }
+      ]
+    }
+  ],
+  "groups": [],
+  "users": [
+    {
+      "username": "admin",
+      "password": "pimatic",
+      "role": "admin"
+    }
+  ],
+  "roles": [
+    {
+      "name": "admin",
+      "permissions": {
+        "pages": "write",
+        "rules": "write",
+        "variables": "write",
+        "messages": "write",
+        "events": "write",
+        "devices": "write",
+        "groups": "write",
+        "plugins": "write",
+        "updates": "write",
+        "database": "write",
+        "config": "write",
+        "controlDevices": true,
+        "restart": true
+      }
+    }
+  ],
+  "variables": []
+}
