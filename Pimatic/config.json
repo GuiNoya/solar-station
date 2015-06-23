@@ -55,12 +55,6 @@
   },
   "plugins": [
     {
-      "plugin": "cron"
-    },
-    {
-      "plugin": "mobile-frontend"
-    },
-    {
       "plugin": "mysensors",
       "driver": "serialport",
       "protocols": "1.4.1",
@@ -70,10 +64,10 @@
       }
     },
     {
-      "plugin": "dht-sensors"
+      "plugin": "sysinfo"
     },
     {
-      "plugin": "sysinfo"
+      "plugin": "mobile-frontend"
     }
   ],
   "devices": [
@@ -93,6 +87,14 @@
       "class": "MySensorsLight",
       "nodeid": 1,
       "sensorid": 0
+    },
+    {
+      "id": "PIR",
+      "name": "PIR",
+      "class": "MySensorsPIR",
+      "nodeid": 15,
+      "sensorid": 1,
+      "resetTime": 8000
     },
     {
       "class": "SystemSensor",
@@ -121,14 +123,6 @@
           "interval": 5000
         }
       ]
-    },
-    {
-      "class": "MySensorsPIR",
-      "id": "PIR",
-      "name": "PIR",
-      "nodeid": 15,
-      "sensorid": 1,
-      "resetTime": 8000
     }
   ],
   "rules": [],
