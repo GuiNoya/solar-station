@@ -68,6 +68,9 @@
     },
     {
       "plugin": "mobile-frontend"
+    },
+    {
+      "plugin": "cron"
     }
   ],
   "devices": [
