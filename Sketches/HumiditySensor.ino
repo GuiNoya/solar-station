@@ -24,11 +24,11 @@ void setup()
   // Send the Sketch Version Information to the Gateway
   ms.sendSketchInfo("Humidity", "1.0");
 
-  // Register all sensors to gw (they will be created as child devices)
+  // Register all sensors to ms (they will be created as child devices)
   ms.present(CHILD_ID_HUM, S_HUM);
   ms.present(CHILD_ID_TEMP, S_TEMP);
   
-  metric = gw.getConfig().isMetric;
+  metric = ms.getConfig().isMetric;
 }
 
 void loop()      
