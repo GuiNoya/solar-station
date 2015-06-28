@@ -7,20 +7,20 @@ unsigned long SLEEP_TIME = 120000; // Sleep time between reports (in millisecond
 #define CHILD_ID 1
 #define NODE_ID 15
 
-MySensor gw;
+MySensor ms;
 // Initialize motion message
 MyMessage msg(CHILD_ID, V_TRIPPED);
 
 void setup()  
 {  
-  gw.begin(NULL, NODE_ID);
+  ms.begin(NULL, NODE_ID);
 
   // Send the sketch version information to the gateway and Controller
-  gw.sendSketchInfo("Motion Sensor", "1.0");
+  ms.sendSketchInfo("Motion Sensor", "1.0");
 
   pinMode(DIGITAL_INPUT_SENSOR, INPUT);      // sets the motion sensor digital pin as input
-  // Register all sensors to gw (they will be created as child devices)
-  gw.present(CHILD_ID, S_MOTION);
+  // Register all sensors to ms (they will be created as child devices)
+  ms.present(CHILD_ID, S_MOTION);
   
 }
 
@@ -30,10 +30,10 @@ void loop()
   boolean tripped = digitalRead(DIGITAL_INPUT_SENSOR) == HIGH; 
         
   Serial.println(tripped);
-  gw.send(msg.set(tripped?"1":"0"));  // Send tripped value to gw 
+  ms.send(msg.set(tripped?"1":"0"));  // Send tripped value to ms
  
   // Sleep until interrupt comes in on motion sensor. Send update every two minute. 
-  gw.sleep(INTERRUPT,CHANGE, SLEEP_TIME);
+  ms.sleep(INTERRUPT,CHANGE, SLEEP_TIME);
 }
 
 
