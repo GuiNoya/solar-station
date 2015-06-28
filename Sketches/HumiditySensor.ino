@@ -8,7 +8,7 @@
 #define HUMIDITY_SENSOR_DIGITAL_PIN 3
 unsigned long SLEEP_TIME = 30000; // Sleep time between reads (in milliseconds)
 
-MySensor gw;
+MySensor ms;
 DHT dht;
 float lastTemp;
 float lastHum;
@@ -18,15 +18,15 @@ MyMessage msgTemp(CHILD_ID_TEMP, V_TEMP);
 
 void setup()  
 { 
-  gw.begin(NULL, NODE_ID);
+  ms.begin(NULL, NODE_ID);
   dht.setup(HUMIDITY_SENSOR_DIGITAL_PIN); 
 
   // Send the Sketch Version Information to the Gateway
-  gw.sendSketchInfo("Humidity", "1.0");
+  ms.sendSketchInfo("Humidity", "1.0");
 
   // Register all sensors to gw (they will be created as child devices)
-  gw.present(CHILD_ID_HUM, S_HUM);
-  gw.present(CHILD_ID_TEMP, S_TEMP);
+  ms.present(CHILD_ID_HUM, S_HUM);
+  ms.present(CHILD_ID_TEMP, S_TEMP);
   
   metric = gw.getConfig().isMetric;
 }
@@ -43,7 +43,7 @@ void loop()
     if (!metric) {
       temperature = dht.toFahrenheit(temperature);
     }
-    gw.send(msgTemp.set(temperature, 1));
+    ms.send(msgTemp.set(temperature, 1));
     Serial.print("T: ");
     Serial.println(temperature);
   }
@@ -53,12 +53,10 @@ void loop()
       Serial.println("Failed reading humidity from DHT");
   } else if (humidity != lastHum) {
       lastHum = humidity;
-      gw.send(msgHum.set(humidity, 1));
+      ms.send(msgHum.set(humidity, 1));
       Serial.print("H: ");
       Serial.println(humidity);
   }
 
-  gw.sleep(SLEEP_TIME); //sleep a bit
+  ms.sleep(SLEEP_TIME); //sleep a bit
 }
-
-
