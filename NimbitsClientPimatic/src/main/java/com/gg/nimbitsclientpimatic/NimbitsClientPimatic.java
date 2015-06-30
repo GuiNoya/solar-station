@@ -13,7 +13,6 @@ public class NimbitsClientPimatic {
     }
 
     public static void updateNimbitsData(String device, String attributeName, boolean dataIsString) {
-        Database.open();
         NimbitsLimitedClient.connect();
 
         String dataPoint = device + " - " + attributeName;
@@ -26,6 +25,7 @@ public class NimbitsClientPimatic {
             lastDate = NimbitsLimitedClient.getSingleData(dataPoint).getTimestamp();
         }
 
+        Database.open();
         List<Tuple> dataList = Database.getData(device, attributeName, lastDate, dataIsString);
         System.out.println("New values since last read: " + dataList.size());
         Database.close();
@@ -60,6 +60,8 @@ public class NimbitsClientPimatic {
         try {
             while (true) {
                 updateNimbitsData("DHT11", "temperature");
+                updateNimbitsData("PIR", "presence");
+                updateNimbitsData("syssensor-system", "cpu");
                 Thread.sleep(10000);
             }
         } catch (Exception e) {

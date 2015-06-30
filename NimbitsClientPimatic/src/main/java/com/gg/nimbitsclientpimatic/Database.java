@@ -1,5 +1,9 @@
 package com.gg.nimbitsclientpimatic;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,26 +18,26 @@ public class Database {
     // É possível capturar todos os sensores, pegando `deviceId`, `attributeName`
     // e `type` de todas linhas da tabela `deviceAttribute` e mandando fazer o
     // update.
-    
-    //private static final String DB_LOCATION = "/home/pi/pimatic-app/pimatic-database.sqlite";
-    private static final String DB_LOCATION = "/home/guilherme/NetBeansProjects/NimbitsClientPimatic/pimatic-database.sqlite";
+    private static final String DB_LOCATION = "/home/pi/pimatic-app/pimatic-database.sqlite";
     private static Connection c = null;
 
     public static void open() {
         try {
+            Files.copy((new File(DB_LOCATION)).toPath(), (new File("temp_db.sqlite").toPath()), StandardCopyOption.REPLACE_EXISTING);
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:" + DB_LOCATION);
+            c = DriverManager.getConnection("jdbc:sqlite:" + "temp_db_pimatic.sqlite");
             c.setAutoCommit(false);
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (IOException | ClassNotFoundException | SQLException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
+            //System.exit(0);
         }
     }
 
     public static void close() {
         try {
             c.close();
-        } catch (Exception e) {
+            Files.deleteIfExists((new File("temp_db_pimatic.sqlite").toPath()));
+        } catch (SQLException | IOException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
